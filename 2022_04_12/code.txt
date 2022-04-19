@@ -1,0 +1,102 @@
+def check(mid, stones, k):
+    cnt = 0
+    res = -1
+    for v in stones:
+        if v < mid:
+            cnt += 1
+        else:
+            if cnt > res:
+                res = cnt
+            cnt = 0
+    return res >= k
+
+def solution(stones, k):
+    s = 1
+    e = max(stones)
+    res = 0
+    while s <= e:
+        mid = (s + e) //2
+        if check(mid, stones, k):
+            e = mid - 1
+        else:
+            res = mid
+            s = mid + 1
+
+    return res
+
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.*;
+import java.util.stream.IntStream;
+
+class Solution {
+    public int[] solution(String s) {
+        String ind = s;
+        s=s.substring(2,s.length()-2);
+        String[] spl = s.split("\\}\\,\\{");
+        Arrays.sort(spl, new Comparator<String>() {
+    @Override
+    public int compare(String s1, String s2) {
+        return s1.length() - s2.length();
+    }
+});
+
+        int[] answer = new int[ind.split("\\{").length-2];
+        int i =0;
+        for(String idxspl : spl)
+        {
+        for(String idx : idxspl.split("\\,"))
+        {
+            if(IntStream.of(answer).anyMatch(x -> x==Integer.parseInt(idx)))
+            {
+                continue;
+            }
+            else
+            {
+                answer[i]=Integer.parseInt(idx);
+                i++;
+            }
+        }
+            
+        }
+        
+        return answer;
+    }
+}
+
+import java.util.ArrayList;
+import java.util.List;
+
+class Solution {
+    public int solution(int[][] board, int[] moves) {
+        int answer = 0;
+        int[] rows = new int[board[0].length];
+        List<Integer> list = new ArrayList<>();
+        for (int move : moves) {
+            int col = move - 1;
+            int num = 0;
+            while (num == 0 && rows[col] < board.length) {
+                num = board[rows[col]++][col];
+            }
+            if (num != 0) list.add(num);
+        }
+
+        int i = 1;
+        while (i < list.size()) {
+            if (list.get(i - 1) == list.get(i)) {
+                list.remove(i - 1);
+                list.remove(i - 1);
+                answer += 2;
+                i = 1;
+                continue;
+            }
+
+            i++;
+        }
+
+
+        return answer;
+    }
+}
